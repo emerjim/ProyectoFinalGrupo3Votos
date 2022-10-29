@@ -1,0 +1,255 @@
+// Sección A - Algoritmos - Grupo #3.
+//Nombres:                                # de Carnet:
+//Emerson Alejandro Jiménez Torres        9989-21-20811
+//Hugo Alexander Domínguez Castellanos    9989-16-12969
+//Marco Antonio Rodriguez Aguirre         9989-19-63
+//Gerson Fernando Ixtecoc Pérez           9989-22-3276
+//Elvin Eduardo Muralles Melgar           9989-22-5053
+//Jorge David Gatica García               9989-22-128
+
+Algoritmo sistemaVotacion
+	
+	Definir opc, i, j, indiceSiguiente, temporal, candidato, lista, indicador, cantidadVotos, listaVotos, n, voto, indice, contador, totalVotos, acumulado, posicionFinal, orden Como Entero;
+	Definir nombreCandidato, partidoCandidato Como Caracter;
+	Definir porcentaje, resultadoPorcentaje Como Real;
+	
+	
+	Escribir "Bienvenido al Sistema de Votación - GRUPO #3";
+	Escribir "---------------------------------------------";
+	Escribir "El programa realizará lo siguiente: ";
+	Escribir "El sistema cargará los datos y partidos políticos que definiremos nosotros por teclado, ";
+	Escribir "cada candidato tendrá un identificador númerico.";
+	Escribir "Se definirá un ganador basado en una lista de votos (precargada) que ya hemos definido previamente. ";
+	Escribir "El sistema imprimirá el resultado de la votación.";
+	
+	
+	Escribir "Presiona una tecla para desplegar el menú";
+	Esperar Tecla
+	
+	Mientras opc <> 5 Hacer
+		Limpiar Pantalla
+		Escribir "Menú - Sistema de Votacion - Grupo #3";
+		Escribir "1. Definir los candidatos.";
+		Escribir "2. Generar de la lista de votos";
+		Escribir "3. Cálculo de los votos";
+		Escribir "4. Impresión de resultados Finales";
+		Escribir "5. SALIR ";
+		
+		Escribir "";
+		Escribir "Seleccione una Opcion";
+		
+		Leer opc;
+		
+		Segun opc Hacer
+			1:
+				Escribir "";
+				Escribir "Opcion 1. Definir los candidatos.";
+				Escribir "";
+				
+				Escribir "Por favor, introduzca la cantidad de cantidatos";
+				Leer candidatos;
+				
+				Dimension lista[candidatos];
+				Dimension nombreCandidato[candidatos];
+				Dimension partidoCandidato[candidatos];
+				
+				
+				Escribir "Usted ha seleccionado: ",candidatos," candidatos";
+				
+				Para i<-1 Hasta candidatos Con Paso 1 Hacer
+					lista[i] = i;
+					
+					Escribir "Introduzca el nombre del candidato #",i,":";
+					Leer nombreCandidato[i];
+					
+					Escribir "Introduzca el partido del candidato";
+					Leer partidoCandidato[i];
+					
+				Fin Para
+				
+				Escribir "Listo, los candidatos y partidos fueron cargados correctamente";
+				Escribir  "A continuación los datos introducidos: ";
+				Escribir "";
+				
+				Para i<-1 Hasta candidatos Con Paso 1 Hacer
+					Escribir  "Candidato #",lista[i],", nombre: ", nombreCandidato[i],", y el partido es: ", partidoCandidato[i];
+				FinPara
+				
+			2:
+				Escribir "";
+				Escribir "Opcion 2 - Carga de Votos";
+				Escribir "";
+				
+				Escribir "Ingresa la cantidad de votos: ";
+				Leer cantidadVotos;
+				
+				n = cantidadVotos+1;
+				
+				Escribir "La cantidad de votos es: ", n;
+				
+				Dimension listaVotos[n];
+				
+				Para i<-1 Hasta cantidadVotos Con Paso 1 Hacer
+					voto = azar(candidatos) +1;
+					
+					listaVotos[i] = voto;
+					
+					Escribir "El voto #",i," fue para el candidato: " listaVotos[i];
+				Fin Para
+				listaVotos[n] = 0;
+				
+				Escribir "Ahora vamos a escribir la lista: ";
+				Escribir "";
+				
+				Para i<-1 Hasta n Con Paso 1 Hacer
+					Escribir "#",i,": ",listaVotos[i];
+				Fin Para
+				
+			3:
+				Escribir "";
+				Escribir "Esta es la opcion 3. Cálculo de los votos";
+				Escribir "";
+				
+				Dimension totalVotos[candidatos];
+				
+				//Para iniciar los votos de los candidatos en 0.
+				Para i<-1 Hasta candidatos Con Paso 1 Hacer
+					totalVotos[i] = 0;
+				Fin Para
+				
+				
+				contador = 0;
+				acumulado = 0;
+				
+				Para i<-1 Hasta n Con Paso 1 Hacer
+					
+					Si listaVotos[i] == 0 Entonces
+						Escribir "Proceso de contabilizacion y cálculo finalizado...";
+					SiNo
+						
+						Para j<-1 Hasta candidatos Con Paso 1 Hacer
+							//Escribir "Aqui el listaVotos[i] es: ",listaVotos[i]," y la lista[j] es: ",lista[j];
+							
+							Si listaVotos[i] == lista[j] Entonces
+								contador = 1;
+								acumulado = totalVotos[j]+contador;
+								totalVotos[j] = acumulado;
+								
+							Fin Si
+							
+						Fin Para
+						
+					Fin Si
+					
+				Fin Para
+				
+				//Calculo del Porcentaje
+				Dimension porcentaje[candidatos];
+				Dimension resultadoPorcentaje[candidatos];
+				Dimension posicionFinal[candidatos];
+				
+				Escribir "";
+				Escribir "El recuento de votos es el siguiente: ";
+				Escribir "";
+				
+				Para i<-1 Hasta candidatos Con Paso 1 Hacer
+					
+					Si totalVotos[i] == 0 Entonces
+						Escribir "Total votos del candidato #",i,", es: ",totalVotos[i],", que representan el: 0%.";
+					SiNo
+						porcentaje[i] = redon ((totalVotos[i]/cantidadVotos)*100);
+						resultadoPorcentaje[i] = porcentaje[i];
+						Escribir "Total votos del candidato #",i,", es: ",totalVotos[i],", que representan el: ",porcentaje[i],", y el resultado es: ",resultadoPorcentaje[i],"%.";
+					Fin Si
+					
+				Fin Para
+				
+			4:
+				Escribir "";
+				Escribir "Esta es la opcion 4 - Impresion del Resultado Final";
+				Escribir "";
+				
+				//Aplicando el metodo Burbuja
+				
+				Para i<-1 Hasta candidatos Con Paso 1 Hacer
+					
+					Para j<-1 Hasta candidatos-1 Con Paso 1 Hacer
+						indiceSiguiente = j+1;
+						
+						//Escribir "Proceso del Swapping...";
+						
+						Si resultadoPorcentaje[j] < resultadoPorcentaje[indiceSiguiente] Entonces
+							//Escribir "Swapping";
+							temporal = resultadoPorcentaje[j];
+							resultadoPorcentaje[j] = resultadoPorcentaje[indiceSiguiente];
+							resultadoPorcentaje[indiceSiguiente] = temporal;
+							//Escribir "Aqui el indice i es: ",i;
+							//Escribir "Aqui el indice indiceSig es: ",indiceSiguiente;
+						SiNo
+							//Escribir "NO Swap";
+						Fin Si
+						
+						//Impresion de resultados
+						//Escribir resultadoPorcentaje[j]," es mayor que: ",resultadoPorcentaje[indiceSiguiente];
+						
+					Fin Para
+					
+				Fin Para
+				
+				//Para Imprimir el listado descendente de los porcentajes
+				Para i<-1 Hasta candidatos Con Paso 1 Hacer
+					Escribir "Este es el resultado de resultadoPorcentaje[",i,"] = ",resultadoPorcentaje[i];
+					//posicionFinal[i] = resultadoPorcentaje[i];
+				Fin Para
+				
+				//Para determinar el orden en el que se mostraran...
+				
+				Escribir "";
+				Escribir "Para determinar el orden en el que se mostraran...";
+				Escribir "";
+				Definir duplicado Como Entero;
+				
+				Para i<-1 Hasta candidatos Con Paso 1 Hacer
+					duplicado = 0
+					Para j<-1 Hasta candidatos Con Paso 1 Hacer
+						duplicado = j;
+						
+						//Por aqui es donde esta el problema de duplicidad.
+						Si resultadoPorcentaje[i] == porcentaje[j] Entonces
+							posicionFinal[i] = j;
+							//Escribir "Aqui i es: ",i,", y j es: ",j," por lo que la posicionFinal[",i,"]"," es: ",posicionFinal[i];
+							//j = j+1;
+						FinSi
+						
+					Fin Para
+				Fin Para
+				//Aqui si se va a mostrar el resultado final.
+				
+				
+				Escribir "";
+				Escribir "_________________________________________________________";
+				Escribir "          ***** RESULTADOS FINALES *****               ";
+				Escribir "_________________________________________________________";
+				Escribir "";
+				
+				Escribir "Los resultados finales son: ";
+				
+				Para i<-1 Hasta candidatos Con Paso 1 Hacer
+					
+					orden = posicionFinal[i];
+					
+					Escribir "Posición #:",i," = canditato #",lista[orden],", nombre: ",nombreCandidato[orden],", partido politico: ",partidoCandidato[orden],", con un total de: ",totalVotos[orden]," votos que representan el: ",porcentaje[orden]," %.";
+				Fin Para
+				
+			5:
+				Escribir "Saliendo del programa...";
+			De Otro Modo:
+				Escribir "La opción seleccionada NO está dentro del menú, seleccione una nueva.";
+				Esperar Tecla
+		Fin Segun
+		Esperar Tecla
+	Fin Mientras
+	
+	Escribir "Hasta aqui llega el programa, Adiós";
+	
+FinAlgoritmo
